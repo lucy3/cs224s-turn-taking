@@ -1,5 +1,6 @@
 # data
 *.text
+switchboard_sample/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
