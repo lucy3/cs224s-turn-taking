@@ -54,6 +54,10 @@ def gather_fillers():
     print "Most common turn enders"
     print Counter(last).most_common(20)
     print "Words marked as F and D"
+    if 'you  know' in fillers_set:
+        fillers_set.remove('you  know')
+    if 'you known' in fillers_set:
+        fillers_set.remove('you known')
     fillers = list(fillers_set)
     print fillers
     return fillers
