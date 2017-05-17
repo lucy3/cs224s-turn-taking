@@ -18,6 +18,8 @@ import string
 import re
 import os
 from collections import Counter
+from sklearn import linear_model
+from sklearn.model_selection import cross_val_score
 
 DATADIR = "./swb_ms98_transcriptions/"
 DFS = "./switchboard_sample/disfluency"
@@ -220,6 +222,18 @@ def main():
                 features.append(items[1:])
 
     print len(features), len(labels)
+    sgdClassifier = linear_model.SGDClassifier(loss="log")
+    sgdClassifier.fit(features, labels)
+    print("weights")
 
+
+    weights = sgdClassifier.coef_
+    words = ['and', 'yeah', 'see', 'anyways', 'you see', 'really', 'actually', 'you know', 'you', 'you know', 'okay', 'huh', 'here', 'anyway', 'you known', 'now', 'man', 'ok', 'like', 'oh', 'well', 'say', 'um', 'un', 'so', 'uh']
+    for i in range(len(words)):
+        print words[i] + ":" + str(weights[0][i])
+
+    print("scores")
+    scores = cross_val_score(sgdClassifier, features, labels)
+    print scores
 if __name__ == '__main__':
     main()
