@@ -21,7 +21,7 @@ from collections import Counter
 
 DATADIR = "./swb_ms98_transcriptions/"
 DFS = "./switchboard_sample/disfluency"
-OUTPUT = "./baseline_features.txt"
+OUTPUT = "./baseline_features"
 
 def gather_fillers():
     """
@@ -132,13 +132,13 @@ def extract_simple_feats_helper(words1, fillers,
             prev = words1[i - 1]
         if i < len(words1) - 1:
             nxt = words1[i + 1]
-        vec = [0] * (len(fillers) + 1)
+        vec = [0] * (len(fillers) + 2)
         time_start = item[0]
         time_end = item[1]
         word = item[2]
         if prev is not None and prev[2] + ' ' + word in fillers:
             vec[fillers.index(prev[2] + ' ' + word)] = 1
-            # vec[-2] = time_end - float(prev[0])
+            vec[-2] = time_end - float(prev[0])
             # print item
             if nxt is None:
                 lab = 1
@@ -153,7 +153,7 @@ def extract_simple_feats_helper(words1, fillers,
             features.append(vec)
         elif word in fillers:
             vec[fillers.index(word)] = 1
-            # vec[-2] = time_end - time_start
+            vec[-2] = time_end - time_start
             # print item
             if nxt is None:
                 lab = 1
