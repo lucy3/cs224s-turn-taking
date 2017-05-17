@@ -20,6 +20,7 @@ import os
 from collections import Counter
 from sklearn import linear_model
 from sklearn.model_selection import cross_val_score
+import numpy as np
 
 DATADIR = "./swb_ms98_transcriptions/"
 DFS = "./switchboard_sample/disfluency"
@@ -34,6 +35,8 @@ def gather_fillers():
     last = []
     prev = []
     fillers_set = set()
+    last_tot = 0
+    first_tot = 0
     with open(DFS, 'r') as file:
         for line in file:
             matches = re.findall(r'\{D ([A-Za-z \#\.\,]*)? \}', line)
@@ -42,13 +45,17 @@ def gather_fillers():
             cleaned = line.lower().translate(None, string.punctuation).split()
             if cleaned and re.match('[ab][0-9]+', cleaned[0]):
                 if len(cleaned) > 1:
+                    first_tot += 1
                     if cleaned[1] == 'f' or cleaned[1] == 'd' or cleaned[1] == 'c':
                         first.append(cleaned[2])
                     else:
                         first.append(cleaned[1])
                 if len(prev) > 1:
+                    last_tot += 1
                     last.append(prev[-1])
             prev = cleaned
+    print "Total starters, enders"
+    print first_tot, last_tot
     print "Most common turn starters"
     print Counter(first).most_common(20)
     print "Most common turn enders"
@@ -58,6 +65,8 @@ def gather_fillers():
         fillers_set.remove('you  know')
     if 'you known' in fillers_set:
         fillers_set.remove('you known')
+    if 'un' in fillers_set:
+        fillers_set.remove('un')
     fillers = list(fillers_set)
     print fillers
     return fillers
@@ -222,17 +231,29 @@ def main():
         with open(OUTPUT, 'r') as features_labels:
             for line in features_labels:
                 items = line.split()
-                labels.append(items[0])
-                features.append(items[1:])
+                labels.append(float(items[0]))
+                features.append([float(i) for i in items[1:]])
 
     print len(features), len(labels)
+    contin = []
+    end = []
+    for i in range(len(labels)):
+        if labels[i] == 0:
+            contin.append(features[i][-1])
+        elif labels[i] == 1:
+            end.append(features[i][-1])
+    print "continuation pause average", sum(contin)/len(contin)
+    print "continuation std", np.std(contin)
+    print "b/t turns pause average", sum(end)/len(end)
+    print "b/t turns std", np.std(end)
+
     sgdClassifier = linear_model.SGDClassifier(loss="log")
     sgdClassifier.fit(features, labels)
     print("weights")
 
 
     weights = sgdClassifier.coef_
-    words = ['and', 'yeah', 'see', 'anyways', 'you see', 'really', 'actually', 'you know', 'you', 'you know', 'okay', 'huh', 'here', 'anyway', 'you known', 'now', 'man', 'ok', 'like', 'oh', 'well', 'say', 'um', 'un', 'so', 'uh']
+    words = ['and', 'yeah', 'see', 'anyways', 'you see', 'really', 'actually', 'you', 'you know', 'okay', 'huh', 'here', 'anyway', 'now', 'man', 'ok', 'like', 'oh', 'well', 'say', 'um', 'so', 'uh']
     for i in range(len(words)):
         print words[i] + ":" + str(weights[0][i])
 
