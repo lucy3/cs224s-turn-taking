@@ -40,7 +40,10 @@ def gather_fillers():
             cleaned = line.lower().translate(None, string.punctuation).split()
             if cleaned and re.match('[ab][0-9]+', cleaned[0]):
                 if len(cleaned) > 1:
-                    first.append(cleaned[1])
+                    if cleaned[1] == 'f' or cleaned[1] == 'd' or cleaned[1] == 'c':
+                        first.append(cleaned[2])
+                    else:
+                        first.append(cleaned[1])
                 if len(prev) > 1:
                     last.append(prev[-1])
             prev = cleaned
