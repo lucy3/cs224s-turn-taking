@@ -15,11 +15,15 @@ the other speaker is or starts talking. (So, hold the floor or support/cede
 the floor.)
 """
 import string
+import numpy as np
 import re
 import os
 from collections import Counter
 from sklearn import linear_model
 from sklearn.model_selection import cross_val_score
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import ExtraTreesClassifier
+from sklearn.tree import DecisionTreeClassifier
 
 DATADIR = "./swb_ms98_transcriptions/"
 DFS = "./switchboard_sample/disfluency"
@@ -222,15 +226,37 @@ def main():
     sgdClassifier = linear_model.SGDClassifier(loss="log")
     sgdClassifier.fit(features, labels)
     print("weights")
-
-
     weights = sgdClassifier.coef_
     words = ['and', 'yeah', 'see', 'anyways', 'you see', 'really', 'actually', 'you know', 'you', 'you know', 'okay', 'huh', 'here', 'anyway', 'you known', 'now', 'man', 'ok', 'like', 'oh', 'well', 'say', 'um', 'un', 'so', 'uh']
     for i in range(len(words)):
         print words[i] + ":" + str(weights[0][i])
 
+    print("Weight for duration of the word: " + str(weights[0][-2]))
+    print("Weight for duration of the pause: " + str(weights[0][-1]))
+
     print("scores")
+    features = np.array(features, dtype=float)
+    labels = np.array(labels, dtype=float)
+
     scores = cross_val_score(sgdClassifier, features, labels)
-    print scores
+    print("Accuracy: %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
+
+    print "Random forest classifier"
+
+    clf = RandomForestClassifier()
+    print("Shapes")
+    print features[:, [-1]].shape
+    clf = clf.fit(features[:, [-1]], labels)
+    weights = clf.feature_importances_
+    """
+    for i in range(len(words)):
+        print words[i] + ": " + str(weights[i])
+    """
+
+    #print("Importance for duration of the word: " + str(weights[-2]))
+    print("Importance for duration of the pause: " + str(weights[-1]))
+    scores = cross_val_score(clf, features, labels)
+    print("Accuracy: %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
+
 if __name__ == '__main__':
     main()
