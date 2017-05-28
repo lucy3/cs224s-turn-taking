@@ -19,7 +19,7 @@ import numpy as np
 import re
 import os
 from collections import Counter
-from sklearn import linear_model
+from sklearn import linear_model, datasets
 from sklearn.model_selection import cross_val_score
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import ExtraTreesClassifier
@@ -250,6 +250,8 @@ def main():
     print "continuation std", np.std(contin)
     print "b/t turns pause average", sum(end)/len(end)
     print "b/t turns std", np.std(end)
+
+    print labels.count(0), labels.count(1)
 
     sgdClassifier = linear_model.SGDClassifier(loss="log")
     sgdClassifier.fit(features, labels)
