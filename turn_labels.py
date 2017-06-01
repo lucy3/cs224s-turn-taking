@@ -19,7 +19,8 @@ import string
 from collections import defaultdict
 from difflib import SequenceMatcher 
 
-TIME_PATH = '/afs/ir/data/linguistic-data/Switchboard/SWBD-MSState-Transcripts/swb_ms98_transcriptions'
+TIME_PATH = './swb_ms98_transcriptions/' 
+#TIME_PATH = '/afs/ir/data/linguistic-data/Switchboard/SWBD-MSState-Transcripts/swb_ms98_transcriptions/'
 ANNOTATED_PATH = './swda/'
 ONE_FILLERS = ['anyways', 'actually', 'yeah', 'okay', 'anyway', 'now', 'ok', 'like', 'well', 'say', 'so', 'see', 'uh', 'um', 'oh', 'huh', 'uhhuh', 'huhuh', 'right', 'sure', 'yes', 'yep', 'hum', 'umhum', 'hm', 'true', 'wow', 'nice', 'cool']
 TWO_FILLERS = ['you see', 'you know', 'thats right', 'thats true']
@@ -156,8 +157,6 @@ def get_times(A_file, B_file):
 
 def label(turns, backchannel, words, times, out, ID, speaker):
     """
-    TODO everything here
-    TODO add output file as an input parameter
     Inputs:
         - turns: list of SENTENCES for each turn
         - backchannel: same length as turns, list of booleans
@@ -175,6 +174,10 @@ def label(turns, backchannel, words, times, out, ID, speaker):
         pointer += len(turn.split())
         turn_indices.add(pointer-1)
     tok_turns = ' '.join(turns).split() # list of WORDS
+    print ID, speaker
+    print ' '.join(turns)
+    print ' '.join(words)
+    print
     seq = SequenceMatcher()
     seq.set_seqs(tok_turns, words) # take in two lists of words for each transcription
     time_to_turns = {i:None for i in range(len(words))}
@@ -195,7 +198,8 @@ def label(turns, backchannel, words, times, out, ID, speaker):
         if ((w == 'know' or w == 'see') and i - 1 > 0 and words[i-1] == 'you') or\
             ((w == 'true' or w == 'right') and i - 1 > 0 and words[i-1] == 'thats'):
                 start, _ = times[i-1]
-                if time_to_turns[i-1] not in turn_indices: # this two-word phrase is part of the same turn
+                if time_to_turns[i-1] and time_to_turns[i-1] not in turn_indices: 
+                    # this two-word phrase is part of the same turn
                     if time_to_turns[i] in reinf_indices: 
                         label = 'reinforce'
                     elif time_to_turns[i-1]-1 in turn_indices:
