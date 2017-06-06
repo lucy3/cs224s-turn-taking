@@ -208,7 +208,7 @@ def main():
                 z_batch = z_train[idx]
                 sess.run(model.optimize, {
                     data: X_batch, target: y_batch, addition: z_batch, dropout: 0.2})
-            if epoch % 50 == 0:
+            if epoch % 50 == 0 or epoch == 499:
                 print("----------------------------")
                 print("Epoch:", epoch)
                 print("Calculating error on 100 training examples...")
