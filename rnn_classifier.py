@@ -9,6 +9,7 @@ import numpy as np
 import os
 from random import shuffle
 import time
+from collections import Counter
 
 def lazy_property(function):
     attribute = '_' + function.__name__
@@ -24,9 +25,10 @@ def lazy_property(function):
 
 class SequenceClassification:
 
-    def __init__(self, data, target, dropout, lr=0.003, num_hidden=200, num_layers=3):
+    def __init__(self, data, target, addition, dropout, lr=0.002, num_hidden=20, num_layers=2):
         self.data = data
         self.target = target
+	self.addition = addition
         self.dropout = dropout
 	self.lr = lr
         self._num_hidden = num_hidden
@@ -34,6 +36,10 @@ class SequenceClassification:
         self.prediction
         self.error
         self.optimize
+
+        print "Num layers", num_layers
+	print "Num hidden", num_hidden
+	print "Learning rate", lr
     
     @lazy_property
     def length(self):
@@ -55,9 +61,10 @@ class SequenceClassification:
         index = tf.range(0, batch_size) * max_length + (self.length - 1)
         flat = tf.reshape(output, [-1, output_size])
         last = tf.gather(flat, index) 
+        augmented = tf.concat([last, self.addition], 1)
         weight, bias = self._weight_and_bias(
-            self._num_hidden, int(self.target.get_shape()[1]))
-        prediction = tf.nn.softmax(tf.matmul(last, weight) + bias)
+            self._num_hidden + int(self.addition.get_shape()[1]), int(self.target.get_shape()[1]))
+        prediction = tf.nn.softmax(tf.matmul(augmented, weight) + bias)
         return prediction
 
     @lazy_property
@@ -84,14 +91,22 @@ class SequenceClassification:
 
 def get_feat_labels():
     targets = {} 
-    classes = set()
+    lexical = {}
+    vocab = set()
+    classes = []
     with open('./labels') as f:
         for line in f:
-            example = "_".join(line.split("\t")[0].split("_")[:-1])
+	    contents = line.split("\t")[0].split("_")
+            example = "_".join(contents[:-1])
+            lex = contents[-1]
+	    vocab.add(lex)
+	    lexical[example] = lex
             label = line.split("\t")[1]
             targets[example] = label
-	    classes.add(label)
-    f.close()    
+	    classes.append(label)
+    least = Counter(classes).most_common()[-1][1]
+    classes = set(classes)
+    f.close()
     features = {}
     m = 0
     for dirpath, dirnames, filenames in os.walk('./feat_pickles/'):
@@ -102,62 +117,98 @@ def get_feat_labels():
 	    features[example] = fs  
     examples = list(set(targets.keys()) & set(features.keys()))
     shuffle(examples)
-    X_train, y_train, X_test, y_test = [], [], [], []
-    split = 3*len(examples)/4
+    X, y, z = [], [], []
+    split1 = 5*len(examples)/6
+    split2 = 4*len(examples)/6
     classes = sorted(classes)
+    vocab = sorted(vocab)
     print "Classes:", classes
+    print "Vocab:", vocab
+    c = Counter()
     for i, ex in enumerate(examples):
+	if c[targets[ex]] > least:
+	    continue
 	fs = features[ex]
 	fs = np.pad(fs, ((0,m-fs.shape[0]),(0,0)), 'constant', constant_values=0)
+	c[targets[ex]] += 1
         idx = classes.index(targets[ex])
         label = np.zeros(len(classes))
         label[idx] = 1.0
-        if i < split:
-            X_train.append(fs)
-	    y_train.append(label)
-	else:
-	    X_test.append(fs)
-            y_test.append(label)
-    X_train = np.array(X_train)
-    y_train = np.array(y_train)
-    X_test = np.array(X_test)
-    y_test = np.array(y_test)
-    return X_train, y_train, X_test, y_test
+        lex = np.zeros(len(vocab))
+	idxl = vocab.index(lexical[ex])
+	lex[idxl] = 1.0
+        X.append(fs)
+	y.append(label)
+	z.append(lex)
+    # seperate out our training, val, test sets
+    idx = range(len(X))
+    shuffle(idx)
+    train_idx = idx[:4*len(X)/6]
+    val_idx = idx[4*len(X)/6:5*len(X)/6]
+    test_idx = idx[5*len(X)/6:]
+    X = np.array(X)
+    y = np.array(y)
+    z = np.array(z)
+    X_train = X[train_idx]
+    y_train = y[train_idx]
+    z_train = z[train_idx]
+    X_val = X[val_idx]
+    y_val = y[val_idx]
+    z_val = z[val_idx]
+    X_test = X[test_idx]
+    y_test = y[test_idx]
+    z_test = z[test_idx]
+    return X_train[:200], y_train[:200], z_train[:200], X_val[:200], y_val[:200], z_val[:200], X_test[:200], y_test[:200], z_test[:200]
 
 def main():
     print "Getting features..." 
-    X_train, y_train, X_test, y_test = get_feat_labels() 
+    X_train, y_train, z_train, X_val, y_val, z_val, X_test, y_test, z_test = get_feat_labels() 
     num_examples, time_steps, num_features = X_train.shape
+    print "# of training examples:", num_examples
     _, num_classes = y_train.shape
+    _, num_vocab = z_train.shape
     data = tf.placeholder(tf.float32, [None, time_steps, num_features])
     target = tf.placeholder(tf.float32, [None, num_classes])
+    addition = tf.placeholder(tf.float32, [None, num_vocab])
     dropout = tf.placeholder(tf.float32)
-    model = SequenceClassification(data, target, dropout)
+    model = SequenceClassification(data, target, addition, dropout)
     sess = tf.Session()
     sess.run(tf.global_variables_initializer())
     print "Training"
-    for epoch in range(10):
-	print "----------------------------"
-        print "Epoch:", epoch
+    for epoch in range(500):
 	start = time.time()
-        for itr in range(100):
-            idx = np.random.choice(np.arange(num_examples), 100, replace=False)
+	l = range(num_examples)
+	shuffle(l)
+	idx_splits = [l[i:i + 200] for i in xrange(0, len(l), 200)]
+        for itr in range(len(idx_splits)):
+	    idx = idx_splits[itr] 
             X_batch = X_train[idx]
 	    y_batch = y_train[idx]
+	    z_batch = z_train[idx]
             sess.run(model.optimize, {
-                data: X_batch, target: y_batch, dropout: 0.5})
-	train_error, cm = sess.run(model.error, {data: X_train, target: y_train, dropout: 1})
-	print "Train error:", 100*train_error
-        print "Confusion matrix"
-	print cm
-	end = time.time()
-	print "Time:", end-start
+                data: X_batch, target: y_batch, addition: z_batch, dropout: 0.5})
+        if epoch % 50 == 0:
+	    print "----------------------------"
+	    print "Epoch:", epoch
+            print "Calculating error on 100 training examples..."
+	    idx = np.random.choice(np.arange(num_examples), 100, replace=False)
+	    train_error, cm = sess.run(model.error, {data: X_train[idx], 
+				target: y_train[idx], addition: z_train[idx], dropout: 1})
+	    print "Train error:", 100*train_error
+	    print "Confusion matrix"
+	    print cm
+	    print "Calculating error on validation set..."
+	    val_error, cm = sess.run(model.error, {data: X_val, target: y_val, addition: z_val, dropout: 1})
+	    print "Val error:", 100*val_error
+	    print "Confusion matrix"
+	    print cm
+	    end = time.time()
+	    print "Time:", end-start
     print "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-    test_error, cm = sess.run(model.error, {data: X_test, target: y_test, dropout: 1})
-    print "Train error:", 100*train_error
+    test_error, cm = sess.run(model.error, {data: X_test, target: y_test, addition: z_test, dropout: 1})
+    print "Test error:", 100*test_error
     print "Confusion matrix"
     print cm
-    print "Final test error:", test_error
 
 if __name__ == '__main__':
     main()
