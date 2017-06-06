@@ -1,7 +1,11 @@
 """
 RNN Sequence Classifier
-Modified from https://gist.github.com/danijar/c7ec9a30052127c7a1ad169eeb83f159
-and https://gist.github.com/danijar/3f3b547ff68effb03e20c470af22c696
+
+Model modified from:
+    https://gist.github.com/danijar/c7ec9a30052127c7a1ad169eeb83f159
+    and https://gist.github.com/danijar/3f3b547ff68effb03e20c470af22c696
+Tensorboard embedding using:
+    https://stackoverflow.com/questions/41258391/tensorboard-embedding-example
 """
 import functools
 import tensorflow as tf
@@ -11,6 +15,7 @@ from random import shuffle
 import time
 from collections import Counter
 from tensorflow.contrib.tensorboard.plugins import projector
+import sys
 
 def lazy_property(function):
     attribute = '_' + function.__name__
@@ -123,9 +128,10 @@ def get_feat_labels():
     for dirpath, dirnames, filenames in os.walk('./feat_pickles/'):
         for f in filenames:
             example = f[:-8]
-            fs = np.load(dirpath + f)
-            m = max(m, fs.shape[0])
-            features[example] = fs  
+            if example in targets.keys():
+                fs = np.load(dirpath + f)
+                m = max(m, fs.shape[0])
+                features[example] = fs  
     examples = list(set(targets.keys()) & set(features.keys()))
     shuffle(examples)
     X, y, z = [], [], []
@@ -172,7 +178,7 @@ def get_feat_labels():
     X_test = X[test_idx]
     y_test = y[test_idx]
     z_test = z[test_idx]
-    return X_train[:200], y_train[:200], z_train[:200], X_val[:200], y_val[:200], z_val[:200], X_test[:200], y_test[:200], z_test[:200]
+    return X_train, y_train, z_train, X_val, y_val, z_val, X_test, y_test, z_test
 
 def main():
     print("Getting features...")
@@ -231,7 +237,6 @@ def main():
                 embedding_conf.tensor_name = 'embedding:0'
                 embedding_conf.metadata_path = os.path.join('log', 'metadata.tsv')
                 projector.visualize_embeddings(summary_writer, config)
-                # save the model
                 saver = tf.train.Saver()
                 saver.save(sess, os.path.join('log', "model.ckpt"))
     print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
