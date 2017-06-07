@@ -215,6 +215,7 @@ def do_data_stuff(features, labels):
         if filenames and '.DS_Store' not in filenames:
             dialogues.append([dirpath + '/' + f for f in filenames])
 
+    fillers = gather_fillers()
     for i in range(len(dialogues)):
         print "extracting features for", dialogues[i]
         f, l = extract_simple_feats(dialogues[i], FILLERS)
