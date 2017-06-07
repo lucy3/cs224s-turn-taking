@@ -27,8 +27,9 @@ from sklearn.tree import DecisionTreeClassifier
 import numpy as np
 
 DATADIR = "./swb_ms98_transcriptions/"
-DFS = "./switchboard_sample/disfluency"
+DFS = "./switchboard/disfluency"
 OUTPUT = "./baseline_features"
+FILLERS = set(['actually', 'anyway', 'anyways', 'cool', 'hm', 'huh', 'huhuh', 'hum', 'like', 'nice', 'now', 'oh', 'okay', 'right', 'say', 'see', 'so', 'sure', 'thats right', 'thats true', 'true', 'uh', 'uhhuh', 'um', 'well', 'wow', 'yeah', 'yep', 'yes', 'you know', 'you see', 'uh-hum'])
 
 def gather_fillers():
     """
@@ -209,7 +210,6 @@ def extract_simple_feats(dialogue, fillers):
     return features, labels
 
 def do_data_stuff(features, labels):
-    fillers = gather_fillers()
     dialogues = []
     for dirpath, dirnames, filenames in os.walk(DATADIR):
         if filenames and '.DS_Store' not in filenames:
@@ -217,7 +217,7 @@ def do_data_stuff(features, labels):
 
     for i in range(len(dialogues)):
         print "extracting features for", dialogues[i]
-        f, l = extract_simple_feats(dialogues[i], fillers)
+        f, l = extract_simple_feats(dialogues[i], FILLERS)
         features.extend(f)
         labels.extend(l)
 
@@ -251,7 +251,8 @@ def main():
     print "b/t turns pause average", sum(end)/len(end)
     print "b/t turns std", np.std(end)
 
-    words = ['and', 'yeah', 'see', 'anyways', 'you see', 'really', 'actually', 'you', 'you know', 'okay', 'huh', 'here', 'anyway', 'now', 'man', 'ok', 'like', 'oh', 'well', 'say', 'um', 'so', 'uh']
+    words = list(FILLERS)
+
     features = np.array(features, dtype=float)
     labels = np.array(labels, dtype=float)
     newFeatures = [features[i] for i in range(len(labels)) if labels[i] == 1.0]
@@ -268,31 +269,106 @@ def main():
 
     newFeatures = np.array(newFeatures)
     newLabels = np.array(newLabels)
+
+    print "SGD"
+    print "All"
     sgdClassifier = linear_model.SGDClassifier()
-    sgdClassifier.fit(newFeatures[:, [-1]], newLabels)
+    sgdClassifier.fit(newFeatures, newLabels)
     print("weights")
     weights = sgdClassifier.coef_
-    #for i in range(len(words)):
-        #print words[i] + ": " + str(weights[0][i])
+    for i in range(len(words)):
+        print words[i] + ": " + str(weights[0][i])
 
-    #print("Weight for duration of the word: " + str(weights[0][-2]))
+    print("Weight for duration of the word: " + str(weights[0][-2]))
     print("Weight for duration of the pause: " + str(weights[0][-1]))
 
     print("scores")
-    scores = cross_val_score(sgdClassifier, newFeatures[:, [-1]], newLabels)
+    scores = cross_val_score(sgdClassifier, newFeatures, newLabels)
+    print("Accuracy: %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
+
+    print "Words only"
+
+    sgdClassifier1 = linear_model.SGDClassifier()
+    sgdClassifier1.fit(newFeatures[:, [i for i in range(len(words))]], newLabels)
+    print("weights")
+    weights = sgdClassifier1.coef_
+    for i in range(len(words)):
+        print words[i] + ": " + str(weights[0][i])
+
+    #print("Weight for duration of the word: " + str(weights[0][-2]))
+    #print("Weight for duration of the pause: " + str(weights[0][-1]))
+
+    print("scores")
+    scores = cross_val_score(sgdClassifier1, newFeatures[:, [i for i in range(len(words))]], newLabels)
+    print("Accuracy: %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
+
+    print "Duration of the word and the pause"
+
+    sgdClassifier2 = linear_model.SGDClassifier()
+    sgdClassifier2.fit(newFeatures[:, [-2, -1]], newLabels)
+    print("weights")
+    weights = sgdClassifier2.coef_
+    print("Weight for duration of the word: " + str(weights[0][-2]))
+    print("Weight for duration of the pause: " + str(weights[0][-1]))
+
+    print("scores")
+    scores = cross_val_score(sgdClassifier2, newFeatures[:, [-2, -1]], newLabels)
+    print("Accuracy: %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
+
+    print "Duration of the pause"
+
+    sgdClassifier3 = linear_model.SGDClassifier()
+    sgdClassifier3.fit(newFeatures[:, [-1]], newLabels)
+    print("weights")
+    weights = sgdClassifier3.coef_
+    print("Weight for duration of the pause: " + str(weights[0][-1]))
+
+    print("scores")
+    scores = cross_val_score(sgdClassifier3, newFeatures[:, [-1]], newLabels)
     print("Accuracy: %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
 
     print "Random forest classifier"
-
+    print "All"
     clf = RandomForestClassifier()
-    clf = clf.fit(newFeatures[:,[-1]], newLabels)
+    clf = clf.fit(newFeatures, newLabels)
     weights = clf.feature_importances_
-    #for i in range(len(words)):
-        #print words[i] + ": " + str(weights[i])
+    for i in range(len(words)):
+        print words[i] + ": " + str(weights[i])
+
+    print("Importance for duration of the word: " + str(weights[-2]))
+    print("Importance for duration of the pause: " + str(weights[-1]))
+    scores = cross_val_score(clf, newFeatures, newLabels)
+    print("Accuracy: %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
+
+    print "Words only"
+    clf1 = RandomForestClassifier()
+    clf1 = clf1.fit(newFeatures[:, [i for i in range(len(words))]], newLabels)
+    weights = clf1.feature_importances_
+    for i in range(len(words)):
+        print words[i] + ": " + str(weights[i])
 
     #print("Importance for duration of the word: " + str(weights[-2]))
+    #print("Importance for duration of the pause: " + str(weights[-1]))
+    scores = cross_val_score(clf1, newFeatures[:, [i for i in range(len(words))]], newLabels)
+    print("Accuracy: %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
+
+    print "Duration of words and pauses"
+    clf2 = RandomForestClassifier()
+    clf2 = clf2.fit(newFeatures[:, [-2, -1]], newLabels)
+    weights = clf2.feature_importances_
+
+    print("Importance for duration of the word: " + str(weights[-2]))
     print("Importance for duration of the pause: " + str(weights[-1]))
-    scores = cross_val_score(clf, newFeatures[:, [-1]], newLabels)
+    scores = cross_val_score(clf2, newFeatures[:, [-2, -1]], newLabels)
+    print("Accuracy: %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
+
+    print "Duration of pauses"
+    clf3 = RandomForestClassifier()
+    clf3 = clf3.fit(newFeatures[:, [-1]], newLabels)
+    weights = clf3.feature_importances_
+
+    print("Importance for duration of the pause: " + str(weights[-1]))
+    scores = cross_val_score(clf3, newFeatures[:, [-1]], newLabels)
     print("Accuracy: %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
 
 if __name__ == '__main__':
