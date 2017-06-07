@@ -1,0 +1,206 @@
+Getting features...
+Classes: ['continue\n', 'end\n', 'reinforce\n', 'seek\n']
+Vocab: ['actually', 'anyway', 'anyways', 'cool', 'hm', 'huh', 'huhuh', 'hum', 'like', 'nice', 'now', 'oh', 'okay', 'r
+ight', 'say', 'see', 'so', 'sure', 'thatsright', 'thatstrue', 'true', 'uh', 'uhhuh', 'um', 'well', 'wow', 'yeah', 'ye
+p', 'yes', 'youknow', 'yousee']
+# of training examples: 20583
+/home/cs231n/myVE35/lib/python3.5/site-packages/tensorflow/python/ops/gradients_impl.py:91: UserWarning: Converting s
+parse IndexedSlices to a dense Tensor of unknown shape. This may consume a large amount of memory.
+  "Converting sparse IndexedSlices to a dense Tensor of unknown shape. "
+Num layers 1
+Num hidden 3
+Learning rate 0.002
+----------------------------
+Epoch: 0
+Calculating error on 100 training examples...
+Train error: 48.9999979734
+Confusion matrix
+[[21  6  5  2]
+ [10  9  5  2]
+ [ 2  0 15  2]
+ [ 5  3  7  6]]
+Calculating error on validation set...
+Val error: 45.3944832087
+Confusion matrix
+[[ 831  249   94   91]
+ [ 449  466  292   99]
+ [  47   26 1089  155]
+ [ 171  179  484  424]]
+Time: 16.037598848342896
+----------------------------
+Epoch: 50
+Calculating error on 100 training examples...
+Train error: 42.999997735
+Confusion matrix
+[[16  0  0  3]
+ [ 3 10  6  3]
+ [ 1  2 18  6]
+ [ 5  2 12 13]]
+Calculating error on validation set...
+Val error: 41.6051328182
+Confusion matrix
+[[ 840  240   63  122]
+ [ 368  547  261  130]
+ [  45   28 1050  194]
+ [ 184  165  341  568]]
+Time: 15.1640043258667
+----------------------------
+Epoch: 100
+Calculating error on 100 training examples...
+Train error: 43.9999997616
+Confusion matrix
+[[15  1  1  3]
+ [ 4 11  7  3]
+ [ 1  0 18  4]
+ [ 3  3 14 12]]
+Calculating error on validation set...
+Val error: 41.4885342121
+Confusion matrix
+[[ 838  242   64  121]
+ [ 360  555  263  128]
+ [  45   28 1063  181]
+ [ 193  157  353  555]]
+Time: 15.176960229873657
+----------------------------
+Epoch: 150
+Calculating error on 100 training examples...
+Train error: 39.0000015497
+Confusion matrix
+[[18  4  0  4]
+ [10  6  6  3]
+ [ 1  0 22  0]
+ [ 2  4  5 15]]
+Calculating error on validation set...
+Val error: 40.7889604568
+Confusion matrix
+[[ 893  186   64  122]
+ [ 381  534  258  133]
+ [  45   28 1046  198]
+ [ 214  135  335  574]]
+Time: 14.901874303817749
+----------------------------
+Epoch: 200
+Calculating error on 100 training examples...
+Train error: 37.9999965429
+Confusion matrix
+[[26  0  0  5]
+ [ 9 13  3  3]
+ [ 0  0 10  1]
+ [ 5  2 10 13]]
+Calculating error on validation set...
+Val error: 40.9444272518
+Confusion matrix
+[[ 892  187   62  124]
+ [ 384  531  251  140]
+ [  45   28 1035  209]
+ [ 220  128  329  581]]
+Time: 14.754392147064209
+----------------------------
+Epoch: 250
+Calculating error on 100 training examples...
+Train error: 35.99999547
+Confusion matrix
+[[22  3  0  4]
+ [12 10  2  1]
+ [ 1  0 23  1]
+ [ 3  3  6  9]]
+Calculating error on validation set...
+Val error: 40.1476889849
+Confusion matrix
+[[ 905  174   64  122]
+ [ 387  528  259  132]
+ [  45   28 1075  169]
+ [ 222  126  338  572]]
+Time: 14.566637754440308
+----------------------------
+Epoch: 300
+Calculating error on 100 training examples...
+Train error: 36.9999974966
+Confusion matrix
+[[13  3  2  2]
+ [ 5 17  3  0]
+ [ 1  0 18  3]
+ [ 1  3 14 15]]
+Calculating error on validation set...
+Val error: 40.1865541935
+Confusion matrix
+[[ 876  203   66  120]
+ [ 364  555  271  116]
+ [  45   28 1096  148]
+ [ 211  139  357  551]]
+Time: 15.067039966583252
+----------------------------
+Epoch: 350
+Calculating error on 100 training examples...
+Train error: 39.0000015497
+Confusion matrix
+[[16  5  0  2]
+ [ 5  9  2  2]
+ [ 0  0 23  2]
+ [ 9  3  9 13]]
+Calculating error on validation set...
+Val error: 40.4974758625
+Confusion matrix
+[[ 905  174   60  126]
+ [ 390  526  250  140]
+ [  45   28 1041  203]
+ [ 228  122  318  590]]
+Time: 15.154332399368286
+----------------------------
+Epoch: 400
+Calculating error on 100 training examples...
+Train error: 39.9999976158
+Confusion matrix
+[[14  2  1  0]
+ [ 6 12  7  2]
+ [ 0  0 21  7]
+ [ 5  2  8 13]]
+Calculating error on validation set...
+Val error: 40.3808772564
+Confusion matrix
+[[ 885  194   63  123]
+ [ 371  544  258  133]
+ [  45   28 1064  180]
+ [ 220  129  334  575]]
+Time: 14.725154638290405
+----------------------------
+Epoch: 450
+Calculating error on 100 training examples...
+Train error: 33.9999973774
+Confusion matrix
+[[15  6  0  3]
+ [ 5 13  4  0]
+ [ 0  2 25  5]
+ [ 4  1  4 13]]
+Calculating error on validation set...
+Val error: 40.342015028
+Confusion matrix
+[[ 876  203   65  121]
+ [ 365  550  265  126]
+ [  45   28 1077  167]
+ [ 215  134  342  567]]
+Time: 15.18899154663086
+----------------------------
+Epoch: 499
+Calculating error on 100 training examples...
+Train error: 35.9999984503
+Confusion matrix
+[[19  2  2  2]
+ [ 4 11  7  2]
+ [ 0  0 16  4]
+ [ 6  1  6 18]]
+Calculating error on validation set...
+Val error: 40.3031468391
+Confusion matrix
+[[ 901  178   59  127]
+ [ 384  533  256  133]
+ [  46   27 1053  191]
+ [ 225  124  324  585]]
+Time: 15.322205781936646
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Test error: 39.2926573753
+Confusion matrix
+[[ 963  178   46  140]
+ [ 372  533  228  127]
+ [  27   26 1033  185]
+ [ 239  121  333  595]]
