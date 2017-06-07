@@ -218,7 +218,7 @@ def do_data_stuff(features, labels):
     fillers = gather_fillers()
     for i in range(len(dialogues)):
         print "extracting features for", dialogues[i]
-        f, l = extract_simple_feats(dialogues[i], FILLERS)
+        f, l = extract_simple_feats(dialogues[i], fillers)
         features.extend(f)
         labels.extend(l)
 
