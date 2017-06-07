@@ -118,6 +118,8 @@ def get_feat_labels():
             vocab.add(lex)
             lexical[example] = lex
             label = line.split("\t")[1]
+            #if 'reinforce' in label: label = 'end\n'
+            #if 'seek' in label: label = 'continue\n'
             targets[example] = label
             classes.append(label)
     least = Counter(classes).most_common()[-1][1]
