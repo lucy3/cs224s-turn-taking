@@ -1,0 +1,198 @@
+Epoch: 0
+Calculating error on 100 training examples... 
+Train error: 37.0000004768
+Confusion matrix
+[[26  1  0  2]
+ [10  5  1  4]
+ [ 0  0 15 13]
+ [ 5  0  1 17]]
+Calculating error on validation set...
+Val error: 44.6171820164
+Confusion matrix
+[[1009   89   38  148]
+ [ 576  347  142  272]
+ [  43   28  733  471]
+ [ 277   71  141  761]]
+Time: 16.436896324157715
+----------------------------
+Epoch: 50
+Calculating error on 100 training examples... 
+Train error: 42.999997735
+Confusion matrix
+[[16  2  1  5]
+ [ 8 15  7  0]
+ [ 0  3 16  1]
+ [ 6  3  7 10]]
+Calculating error on validation set...
+Val error: 41.0804539919
+Confusion matrix
+[[897 201  55 131]
+ [401 533 271 132]
+ [ 37  34 996 208]
+ [222 130 292 606]]
+Time: 15.330755710601807
+----------------------------
+Epoch: 100
+Calculating error on 100 training examples... 
+Train error: 36.9999974966
+Confusion matrix
+[[22  5  1  5]
+ [ 4 11  3  2]
+ [ 1  1 19  3]
+ [ 3  2  7 11]]
+Calculating error on validation set...
+Val error: 40.8278286457
+Confusion matrix
+[[ 877  221   56  130]
+ [ 380  556  278  123]
+ [  37   34 1016  188]
+ [ 218  135  301  596]]
+Time: 15.352852582931519
+----------------------------
+Epoch: 150
+Calculating error on 100 training examples... 
+Train error: 48.9999979734
+Confusion matrix
+[[16  4  2  2]
+ [ 6  4 10  1]
+ [ 0  4 26  4]
+ [ 8  2  6  5]]
+Calculating error on validation set...
+Val error: 40.7306671143
+Confusion matrix
+[[ 886  212   56  130]
+ [ 390  546  278  123]
+ [  37   34 1021  183]
+ [ 224  129  300  597]]
+Time: 15.870658159255981
+----------------------------
+Epoch: 200
+Calculating error on 100 training examples... 
+Train error: 42.999997735
+Confusion matrix
+[[17  6  0  2]
+ [ 9 15  5  1]
+ [ 1  1 13  4]
+ [ 3  5  6 12]]
+Calculating error on validation set...
+Val error: 40.7306671143
+Confusion matrix
+[[ 884  214   56  130]
+ [ 387  550  277  123]
+ [  36   35 1020  184]
+ [ 224  130  300  596]]
+Time: 15.596254348754883
+----------------------------
+Epoch: 250
+Calculating error on 100 training examples... 
+Train error: 40.000000596
+Confusion matrix
+[[17  4  2  1]
+ [ 5 11  2  0]
+ [ 1  0 27  8]
+ [ 6  3  8  5]]
+Calculating error on validation set...
+Val error: 40.8666938543
+Confusion matrix
+[[ 878  220   56  130]
+ [ 383  553  282  119]
+ [  36   35 1025  179]
+ [ 222  132  309  587]]
+Time: 15.68498706817627
+----------------------------
+----------------------------
+Epoch: 300
+Calculating error on 100 training examples... 
+Train error: 47.9999989271
+Confusion matrix
+[[17  4  0  2]
+ [14  7  6  1]
+ [ 1  0 16  4]
+ [ 4  6  6 12]]
+Calculating error on validation set...
+Val error: 40.9055560827
+Confusion matrix
+[[ 883  215   57  129]
+ [ 384  554  285  114]
+ [  36   35 1025  179]
+ [ 225  129  317  579]]
+Time: 15.646512985229492
+
+----------------------------
+Epoch: 350
+Calculating error on 100 training examples... 
+Train error: 37.0000004768
+Confusion matrix
+[[19  0  0  2]
+ [ 7  9  4  2]
+ [ 3  1 24  2]
+ [ 5  2  9 11]]
+Calculating error on validation set...
+Val error: 40.7889604568
+Confusion matrix
+[[ 886  212   55  131]
+ [ 391  547  282  117]
+ [  36   35 1021  183]
+ [ 225  129  303  593]]
+Time: 17.037996292114258
+----------------------------
+Epoch: 400
+Calculating error on 100 training examples... 
+Train error: 40.9999996424
+Confusion matrix
+[[15  4  0  4]
+ [ 6  8  2  3]
+ [ 0  0 25  2]
+ [ 6  3 11 11]]
+Calculating error on validation set...
+Val error: 40.5169069767
+Confusion matrix
+[[ 902  196   55  131]
+ [ 392  546  283  116]
+ [  36   35 1023  181]
+ [ 226  128  306  590]]
+Time: 15.668661117553711
+----------------------------
+Epoch: 450
+Calculating error on 100 training examples... 
+Train error: 42.0000016689
+Confusion matrix
+[[15  4  0  3]
+ [ 6  5  4  2]
+ [ 0  0 26  3]
+ [ 4  5 11 12]]
+Calculating error on validation set...
+Val error: 41.0027176142
+Confusion matrix
+[[ 872  226   58  128]
+ [ 372  566  286  113]
+ [  36   35 1028  176]
+ [ 213  141  326  570]]
+Time: 16.16909146308899
+----------------------------
+Epoch: 499
+Calculating error on 100 training examples... 
+Train error: 40.000000596
+Confusion matrix
+[[17  3  1  1]
+ [ 8  9  5  5]
+ [ 0  1 21  3]
+ [ 2  0 11 13]]
+Calculating error on validation set...
+Val error: 40.3031468391
+Confusion matrix
+[[ 919  179   54  132]
+ [ 399  537  279  122]
+ [  37   34 1014  190]
+ [ 234  120  294  602]]
+Time: 16.49772071838379
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Test error: 39.4286841154
+Confusion matrix
+[[ 895  174   48  131]
+ [ 390  575  235  131]
+ [  35   33 1057  197]
+ [ 217  114  324  590]]
+
+
+
