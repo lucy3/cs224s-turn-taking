@@ -29,7 +29,7 @@ import numpy as np
 DATADIR = "./swb_ms98_transcriptions/"
 DFS = "./switchboard/disfluency"
 OUTPUT = "./baseline_features"
-FILLERS = set(['actually', 'anyway', 'anyways', 'cool', 'hm', 'huh', 'huhuh', 'hum', 'like', 'nice', 'now', 'oh', 'okay', 'right', 'say', 'see', 'so', 'sure', 'thats right', 'thats true', 'true', 'uh', 'uhhuh', 'um', 'well', 'wow', 'yeah', 'yep', 'yes', 'you know', 'you see', 'uh-hum'])
+FILLERS = ['actually', 'anyway', 'anyways', 'cool', 'hm', 'huh', 'huhuh', 'hum', 'like', 'nice', 'now', 'oh', 'okay', 'right', 'say', 'see', 'so', 'sure', 'thats right', 'thats true', 'true', 'uh', 'uhhuh', 'um', 'well', 'wow', 'yeah', 'yep', 'yes', 'you know', 'you see', 'uh-hum']
 
 def gather_fillers():
     """
