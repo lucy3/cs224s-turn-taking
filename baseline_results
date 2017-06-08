@@ -1,0 +1,169 @@
+329272 329272
+continuation pause average 0.146976132862
+continuation std 0.325892098574
+b/t turns pause average 0.138730552396
+b/t turns std 0.328226648018
+SGD
+All
+weights
+actually: -1.20751398103
+anyway: 0.774971659467
+anyways: 0.30638414444
+cool: 0.883107239857
+hm: 1.1354235941
+huh: 1.1354235941
+huhuh: 0.0
+hum: 1.11740099737
+like: -1.06333320718
+nice: -0.937175030053
+now: -0.955197626784
+oh: -0.540677901953
+okay: 0.847062046394
+right: 1.04531061044
+say: -1.02728801371
+see: -1.02728801371
+so: -0.829039449662
+sure: 0.829039449662
+thats right: 0.0
+thats true: 0.0
+true: 0.973220223516
+uh: -1.04531061044
+uhhuh: 0.0
+um: -0.973220223516
+well: -1.06333320718
+wow: 1.00926541698
+yeah: 1.04531061044
+yep: 1.09937840064
+yes: 0.937175030053
+you know: -1.04531061044
+you see: -1.09937840064
+uhhum: 0.0
+Weight for duration of the word: 0.783915373095
+Weight for duration of the pause: 0.0249410210523
+scores
+Accuracy: 0.75 (+/- 0.01)
+Words only
+weights
+actually: -1.04531061044
+anyway: 0.991242820248
+anyways: 0.342429337904
+cool: 0.883107239857
+hm: 0.973220223516
+huh: 1.00926541698
+huhuh: 0.0
+hum: 1.00926541698
+like: -1.09937840064
+nice: -0.774971659467
+now: -1.02728801371
+oh: -0.883107239857
+okay: 0.955197626784
+right: 1.00926541698
+say: -1.04531061044
+see: -1.02728801371
+so: -1.06333320718
+sure: 0.991242820248
+thats right: 0.0
+thats true: 0.0
+true: 0.955197626784
+uh: -1.04531061044
+uhhuh: 0.0
+um: -0.991242820248
+well: -1.02728801371
+wow: 1.00926541698
+yeah: 0.991242820248
+yep: 0.991242820248
+yes: 0.991242820248
+you know: -1.02728801371
+you see: -1.04531061044
+uhhum: 0.0
+scores
+Accuracy: 0.74 (+/- 0.01)
+Duration of the word and the pause
+weights
+Weight for duration of the word: 6.26807215887
+Weight for duration of the pause: -0.651291589395
+scores
+Accuracy: 0.65 (+/- 0.02)
+Duration of the pause
+weights
+Weight for duration of the pause: -0.839778664489
+scores
+Accuracy: 0.50 (+/- 0.01)
+Random forest classifier
+All
+actually: 0.0049355934871
+anyway: 0.000591115031404
+anyways: 3.99500344003e-05
+cool: 0.000228598420439
+hm: 0.00725452717495
+huh: 0.0119830581996
+huhuh: 0.0
+hum: 0.00546660740782
+like: 0.016759296855
+nice: 0.00131723706073
+now: 0.00231957435145
+oh: 0.00437764633669
+okay: 0.00513508585462
+right: 0.033220300909
+say: 0.00260993959113
+see: 0.0016260087773
+so: 0.00402733840365
+sure: 0.00205453622144
+thats right: 0.0
+thats true: 0.0
+true: 0.00232349618255
+uh: 0.0476020377767
+uhhuh: 0.0
+um: 0.0199073552214
+well: 0.00947369720417
+wow: 0.00276715340514
+yeah: 0.0859706275614
+yep: 0.00424193345914
+yes: 0.0044159822238
+you know: 0.0178858807668
+you see: 0.000833788353311
+uhhum: 0.0
+Importance for duration of the word: 0.525000068755
+Importance for duration of the pause: 0.175631564973
+Accuracy: 0.76 (+/- 0.01)
+Words only
+actually: 0.00784766245128
+anyway: 0.001744072807
+anyways: 0.000103119113092
+cool: 0.0003383045971
+hm: 0.0222921913278
+huh: 0.0396554680147
+huhuh: 0.0
+hum: 0.0203321254472
+like: 0.0832998974226
+nice: 0.00170903817183
+now: 0.00319850464387
+oh: 0.0099633571545
+okay: 0.0246134113649
+right: 0.157546960242
+say: 0.00903343839135
+see: 0.00749165267497
+so: 0.00921199065765
+sure: 0.0106944762246
+thats right: 0.0
+thats true: 0.0
+true: 0.0109083704104
+uh: 0.0964899169638
+uhhuh: 0.0
+um: 0.0113832607451
+well: 0.0471568849742
+wow: 0.0166887179969
+yeah: 0.304385032214
+yep: 0.0129989953449
+yes: 0.0286851421026
+you know: 0.0608035670329
+you see: 0.00142444150832
+uhhum: 0.0
+Accuracy: 0.74 (+/- 0.01)
+Duration of words and pauses
+Importance for duration of the word: 0.65218907719
+Importance for duration of the pause: 0.34781092281
+Accuracy: 0.69 (+/- 0.01)
+Duration of pauses
+Importance for duration of the pause: 1.0
+Accuracy: 0.61 (+/- 0.00)
