@@ -30,6 +30,7 @@ DATADIR = "./swb_ms98_transcriptions/"
 DFS = "./switchboard/disfluency"
 OUTPUT = "./baseline_features"
 FILLERS = ['actually', 'anyway', 'anyways', 'cool', 'hm', 'huh', 'huhuh', 'hum', 'like', 'nice', 'now', 'oh', 'okay', 'right', 'say', 'see', 'so', 'sure', 'thats right', 'thats true', 'true', 'uh', 'uhhuh', 'um', 'well', 'wow', 'yeah', 'yep', 'yes', 'you know', 'you see', 'uhhum']
+NORMALIZE = True
 
 def gather_fillers():
     """
@@ -269,6 +270,12 @@ def main():
 
     newFeatures = np.array(newFeatures)
     newLabels = np.array(newLabels)
+    if NORMALIZE:
+        newFeaturesMean = np.mean(newFeatures, axis = 0)
+        wordDurationMean = newFeaturesMean[-2]
+        pauseMean = newFeaturesMean[-1]
+        newFeatures[:, -2] = newFeatures[:, -2] / float(wordDurationMean)
+        newFeatures[:, -1] = newFeatures[:, -1] / float(pauseMean)
 
     print "SGD"
     print "All"
